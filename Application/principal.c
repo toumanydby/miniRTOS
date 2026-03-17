@@ -10,15 +10,15 @@ uint32_t *stack1 = (uint32_t *) STACK_1_ADDR;
 uint32_t *stack2 = (uint32_t *) STACK_2_ADDR;
 
 char current_process = 0;
-char setup = 0;
+//char setup = 0;
 
 void SysTick_Handler(void) {
 	
-	if (!setup){
-		__set_PSP((uint32_t)stack1);
-		setup = 1;
-		return;
-	}
+//	if (!setup){
+//		__set_PSP((uint32_t)stack1);
+//		setup = 1;
+//		return;
+//	}
 	
 	if(current_process){
 		stack2 = (uint32_t *) __get_PSP();
@@ -29,17 +29,29 @@ void SysTick_Handler(void) {
 	}
 	
 	current_process = !current_process;
+	SCB->ICSR |= SCB_ICSR_PENDSVSET ;
 	return;
 }
+
+void PendSV_Handler(){
+	uint32_t *previous_stack = current_process ? stack1 : stack2;
+	uint32_t *next_stack = current_process ? stack2 : stack1;
+	
+  __ASM volatile ("MOV %0, r4"  : "=r" (previous_stack[8]));
+	__ASM volatile ("MOV r4, %0" : : "r" (next_stack[8]) : );
+}
+
 
 void dummy1(void){
 	int a = 0;
 	while(1){
 		a++;
+		__ASM volatile ("MOV r4, %0" : : "r" (a) : );
 	}
 }
 
 void dummy2(void){
+	__ASM volatile ("MOV r4, #15" );
 	while(1){
 		int a = 20;
 		a++;
@@ -66,12 +78,19 @@ int main ( void )
 	SysTick->LOAD |= 72000;
 	SysTick->VAL = 0;
 	
+	NVIC_SetPriority(SysTick_IRQn, 0x0);
+	NVIC_SetPriority(PendSV_IRQn, 0x3);
+	
 	initialize_stacks();
+	
+	__set_PSP((uint32_t)stack1);
 		
 	uint32_t ctrl = __get_CONTROL();
 	ctrl |= 3;
 	__set_CONTROL(ctrl);
 
+	dummy1();
+	
 	while (1)
 	{
 	}
