@@ -2,9 +2,9 @@
 
 #define STACK_1_ADDR 0x20001000
 #define STACK_2_ADDR 0x20003000
-#define XPSR_DEFAULT 0x10000000
-#define LR_DEFAULT 0xFFFFFFFD
 
+#define XPSR_DEFAULT 0x01000000
+#define LR_DEFAULT 0xFFFFFFFD
 
 uint32_t *stack1 = (uint32_t *) STACK_1_ADDR;
 uint32_t *stack2 = (uint32_t *) STACK_2_ADDR;
@@ -13,7 +13,14 @@ char current_process = 0;
 char setup = 0;
 
 void SysTick_Handler(void) {
-	if(current_process) {
+	
+	if (!setup){
+		__set_PSP((uint32_t)stack1);
+		setup = 1;
+		return;
+	}
+	
+	if(current_process){
 		stack2 = (uint32_t *) __get_PSP();
 		__set_PSP((uint32_t)stack1);
 	} else {
@@ -39,36 +46,32 @@ void dummy2(void){
 	}
 }
 
-void init_stacks(){
+void initialize_stacks() {
 	for (int i = 0; i<6; i++) {
 		stack1[i] = 0;
 		stack2[i] = 0;
 	}
-	
-	stack1[5] = LR_DEFAULT;
-	stack2[5] = LR_DEFAULT;
-	
-	stack1[6] = (uint32_t) dummy1;
-	stack2[6] = (uint32_t) dummy2;
-	
+
 	stack1[7] = XPSR_DEFAULT;
 	stack2[7] = XPSR_DEFAULT;
-	
+	stack1[6] = (uint32_t) dummy1;
+	stack2[6] = (uint32_t) dummy2;
+	stack1[5] = LR_DEFAULT;
+	stack2[5] = LR_DEFAULT;
 }
-
 int main ( void )
 {
-	SysTick->CTRL = SysTick_CTRL_CLKSOURCE | SysTick_CTRL_TICKINT | SysTick_CTRL_ENABLE ;
-	SysTick->LOAD = 72000 - 1;
 	
-	init_stacks();
+	SysTick->CTRL |= SysTick_CTRL_ENABLE + SysTick_CTRL_TICKINT + SysTick_CTRL_CLKSOURCE;
+	SysTick->LOAD |= 72000;
+	SysTick->VAL = 0;
 	
-	__set_PSP((uint32_t)stack1);
-	
+	initialize_stacks();
+		
 	uint32_t ctrl = __get_CONTROL();
 	ctrl |= 3;
 	__set_CONTROL(ctrl);
-	
+
 	while (1)
 	{
 	}

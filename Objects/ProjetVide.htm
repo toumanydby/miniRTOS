@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\ProjetVide.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\ProjetVide.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Tue Mar 10 18:26:46 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Tue Mar 17 20:39:16 2026
 <BR><P>
-<H3>Maximum Stack Usage =         36 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =         32 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-__rt_entry_main &rArr; main &rArr; init_stacks
+SystemInit &rArr; SetSysClock &rArr; SetSysClockTo72
 <P>
 <H3>
 Functions with no stack information
@@ -87,8 +87,8 @@ Function Pointers
  <LI><a href="#[5]">UsageFault_Handler</a> from startup_stm32f10x_md.o(.text) referenced from startup_stm32f10x_md.o(RESET)
  <LI><a href="#[a]">WWDG_IRQHandler</a> from startup_stm32f10x_md.o(.text) referenced from startup_stm32f10x_md.o(RESET)
  <LI><a href="#[36]">__main</a> from __main.o(!!!main) referenced from startup_stm32f10x_md.o(.text)
- <LI><a href="#[37]">dummy1</a> from principal.o(.text.dummy1) referenced 2 times from principal.o(.text.init_stacks)
- <LI><a href="#[38]">dummy2</a> from principal.o(.text.dummy2) referenced 2 times from principal.o(.text.init_stacks)
+ <LI><a href="#[37]">dummy1</a> from principal.o(.text.dummy1) referenced 2 times from principal.o(.text.initialize_stacks)
+ <LI><a href="#[38]">dummy2</a> from principal.o(.text.dummy2) referenced 2 times from principal.o(.text.initialize_stacks)
 </UL>
 <P>
 <H3>
@@ -209,8 +209,8 @@ Global Symbols
 <P><STRONG><a name="[70]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[42]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; init_stacks
+<BR><BR>[Stack]<UL><LI>Max Depth = 28 + Unknown Stack Size
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; initialize_stacks
 </UL>
 <BR>[Calls]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -471,8 +471,8 @@ Global Symbols
 
 <P><STRONG><a name="[7a]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 114 bytes, Stack size 16 bytes, principal.o(.text.SysTick_Handler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = SysTick_Handler
+<P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 162 bytes, Stack size 20 bytes, principal.o(.text.SysTick_Handler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = SysTick_Handler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md.o(RESET)
 </UL>
@@ -486,23 +486,23 @@ Global Symbols
 <P><STRONG><a name="[37]"></a>dummy1</STRONG> (Thumb, 16 bytes, Stack size 4 bytes, principal.o(.text.dummy1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = dummy1
 </UL>
-<BR>[Address Reference Count : 1]<UL><LI> principal.o(.text.init_stacks)
+<BR>[Address Reference Count : 1]<UL><LI> principal.o(.text.initialize_stacks)
 </UL>
 <P><STRONG><a name="[38]"></a>dummy2</STRONG> (Thumb, 16 bytes, Stack size 4 bytes, principal.o(.text.dummy2))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = dummy2
 </UL>
-<BR>[Address Reference Count : 1]<UL><LI> principal.o(.text.init_stacks)
+<BR>[Address Reference Count : 1]<UL><LI> principal.o(.text.initialize_stacks)
 </UL>
-<P><STRONG><a name="[4d]"></a>init_stacks</STRONG> (Thumb, 128 bytes, Stack size 4 bytes, principal.o(.text.init_stacks))
-<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = init_stacks
+<P><STRONG><a name="[4d]"></a>initialize_stacks</STRONG> (Thumb, 128 bytes, Stack size 4 bytes, principal.o(.text.initialize_stacks))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = initialize_stacks
 </UL>
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[43]"></a>main</STRONG> (Thumb, 96 bytes, Stack size 32 bytes, principal.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = main &rArr; init_stacks
+<P><STRONG><a name="[43]"></a>main</STRONG> (Thumb, 96 bytes, Stack size 24 bytes, principal.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = main &rArr; initialize_stacks
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_stacks
+<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initialize_stacks
 </UL>
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
