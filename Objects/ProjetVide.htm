@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\ProjetVide.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\ProjetVide.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Tue Mar 17 21:08:37 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Thu Apr  2 12:47:54 2026
 <BR><P>
 <H3>Maximum Stack Usage =         40 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -468,7 +468,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md.o(RESET)
 </UL>
-<P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 130 bytes, Stack size 16 bytes, principal.o(.text.SysTick_Handler))
+<P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 218 bytes, Stack size 16 bytes, principal.o(.text.SysTick_Handler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = SysTick_Handler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md.o(RESET)
@@ -483,12 +483,12 @@ Global Symbols
 <P><STRONG><a name="[37]"></a>dummy1</STRONG> (Thumb, 20 bytes, Stack size 4 bytes, principal.o(.text.dummy1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = dummy1
 </UL>
-<BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
 <BR>[Address Reference Count : 1]<UL><LI> principal.o(.text.initialize_stacks)
 </UL>
 <P><STRONG><a name="[38]"></a>dummy2</STRONG> (Thumb, 20 bytes, Stack size 4 bytes, principal.o(.text.dummy2))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = dummy2
+</UL>
+<BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> principal.o(.text.initialize_stacks)
 </UL>
@@ -498,11 +498,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[43]"></a>main</STRONG> (Thumb, 136 bytes, Stack size 32 bytes, principal.o(.text.main))
+<P><STRONG><a name="[43]"></a>main</STRONG> (Thumb, 128 bytes, Stack size 32 bytes, principal.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = main &rArr; __NVIC_SetPriority
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initialize_stacks
-<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dummy1
+<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dummy2
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_SetPriority
 </UL>
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main

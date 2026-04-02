@@ -27,7 +27,17 @@ Project File Date:  09/09/2024
 <h2>Output:</h2>
 *** Using Compiler 'V6.22', folder: 'C:\Users\33695\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Simulation'
-".\Objects\ProjetVide.axf" - 0 Error(s), 0 Warning(s).
+Application/principal.c(56): warning: variable 'a' set but not used [-Wunused-but-set-variable]
+   56 |         int  a = 0;
+      |              ^
+Application/principal.c(66): warning: variable 'a' set but not used [-Wunused-but-set-variable]
+   66 |                 int  a = 20;
+      |                      ^
+2 warnings generated.
+compiling principal.c...
+linking...
+Program Size: Code=1488 RO-data=268 RW-data=168 ZI-data=1640  
+".\Objects\ProjetVide.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -54,9 +64,9 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE@6.1.0
 
    * Component: Keil::Device:Startup@1.0.0
-      Include file:  RTE_Driver/Config/RTE_Device.h
-      Source file:   Device/Source/system_stm32f10x.c
       Source file:   Device/Source/ARM/startup_stm32f10x_md.s
+      Source file:   Device/Source/system_stm32f10x.c
+      Include file:  RTE_Driver/Config/RTE_Device.h
       Source file:   Device/Source/ARM/STM32F1xx_OPT.s
 Build Time Elapsed:  00:00:00
 </pre>

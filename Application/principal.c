@@ -9,18 +9,28 @@
 uint32_t *stack1 = (uint32_t *) STACK_1_ADDR;
 uint32_t *stack2 = (uint32_t *) STACK_2_ADDR;
 
+uint32_t schedule[40] = {1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0};
+
 char current_process = 0;
+uint32_t time = 0;
 //char setup = 0;
 
 void SysTick_Handler(void) {
 	
-//	if (!setup){
-//		__set_PSP((uint32_t)stack1);
-//		setup = 1;
-//		return;
-//	}
+	//if (!setup){
+	//	__set_PSP((uint32_t)stack1);
+	//	setup = 1;
+	//	return;
+	//}
 	
-	if(current_process){
+	 time = (time + 1) % 40;
+	 current_process = schedule[time];
+	
+	if (!time || schedule[time-1] == schedule[time]) {
+		 return;
+	}
+	
+	if(!current_process){
 		stack2 = (uint32_t *) __get_PSP();
 		__set_PSP((uint32_t)stack1);
 	} else {
@@ -28,7 +38,6 @@ void SysTick_Handler(void) {
 		__set_PSP((uint32_t)stack2);
 	}
 	
-	current_process = !current_process;
 	SCB->ICSR |= SCB_ICSR_PENDSVSET ;
 	return;
 }
@@ -43,17 +52,18 @@ void PendSV_Handler(){
 
 
 void dummy1(void){
-	int a = 0;
+	__ASM volatile ("MOV r4, #1");
+	int  a = 0;
 	while(1){
 		a++;
-		__ASM volatile ("MOV r4, %0" : : "r" (a) : );
+		//__ASM volatile ("MOV r4, %0" : : "r" (a) : );
 	}
 }
 
 void dummy2(void){
-	__ASM volatile ("MOV r4, #15" );
+	__ASM volatile ("MOV r4, #2" );
 	while(1){
-		int a = 20;
+		int  a = 20;
 		a++;
 	}
 }
@@ -74,8 +84,8 @@ void initialize_stacks() {
 int main ( void )
 {
 	
-	SysTick->CTRL |= SysTick_CTRL_ENABLE + SysTick_CTRL_TICKINT + SysTick_CTRL_CLKSOURCE;
-	SysTick->LOAD |= 72000;
+	SysTick->CTRL = SysTick_CTRL_ENABLE + SysTick_CTRL_TICKINT + SysTick_CTRL_CLKSOURCE;
+	SysTick->LOAD = 72000*2;
 	SysTick->VAL = 0;
 	
 	NVIC_SetPriority(SysTick_IRQn, 0x0);
@@ -89,7 +99,7 @@ int main ( void )
 	ctrl |= 3;
 	__set_CONTROL(ctrl);
 
-	dummy1();
+	dummy2();
 	
 	while (1)
 	{
